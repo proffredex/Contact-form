@@ -1,0 +1,107 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Contact Form</title>
+</head>
+<body>
+<div class="contact-form">
+    <h2>Contact form</h2>
+    <form action="/submit-form" method="POST">
+    <div>
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
+        <span class="error-message" id="fullnameError"></span>
+    </div>
+    <div>
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+        <span class="error-message" id="emailError"></span>
+    </div>
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required pattern="^[0-9\-]{10,}$">
+        <span class="error-message" id="phoneError"></span>
+    <div>
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Write your message here..." minlength="20" required></textarea>
+        <span class="error-message" id="messageError"></span>
+    </div>
+        <!-- Honeypot field (hidden from users but visible to bots) -->
+        <input type="text" name="honeypot" style="display:none;" tabindex="-1" autocomplete="off">
+
+        <input type="hidden" id="timestamp" name="timestamp" value="">
+        <button type="submit">Send Message</button>
+    </form>
+</div>
+<script>
+    // Full Name Real-Time Validation
+    document.getElementById('fullname').addEventListener('input', function() {
+        const fullname = this;
+        const errorField = document.getElementById('fullnameError');
+        
+        if (fullname.value.trim().length < 3) {
+            errorField.textContent = 'Full name must be at least 3 characters long.';
+            fullname.classList.add('error');
+            fullname.classList.remove('success');
+        } else {
+            errorField.textContent = '';
+            fullname.classList.remove('error');
+            fullname.classList.add('success');
+        }
+    });
+    
+    // Email Real-Time Validation
+    document.getElementById('email').addEventListener('input', function() {
+        const email = this;
+        const errorField = document.getElementById('emailError');
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+        if (!emailPattern.test(email.value)) {
+            errorField.textContent = 'Please enter a valid email address.';
+            email.classList.add('error');
+            email.classList.remove('success');
+        } else {
+            errorField.textContent = '';
+            email.classList.remove('error');
+            email.classList.add('success');
+        }
+    });
+    
+    // Phone Number Real-Time Validation
+    document.getElementById('phone').addEventListener('input', function() {
+        const phone = this;
+        const errorField = document.getElementById('phoneError');
+        const phonePattern = /^[0-9\-]{10,}$/;
+    
+        if (!phonePattern.test(phone.value)) {
+            errorField.textContent = 'Phone number must be at least 10 digits.';
+            phone.classList.add('error');
+            phone.classList.remove('success');
+        } else {
+            errorField.textContent = '';
+            phone.classList.remove('error');
+            phone.classList.add('success');
+        }
+    });
+    
+    // Message Real-Time Validation
+    document.getElementById('message').addEventListener('input', function() {
+        const message = this;
+        const errorField = document.getElementById('messageError');
+    
+        if (message.value.trim().length < 20) {
+            errorField.textContent = 'Message must be at least 20 characters long.';
+            message.classList.add('error');
+            message.classList.remove('success');
+        } else {
+            errorField.textContent = '';
+            message.classList.remove('error');
+            message.classList.add('success');
+        }
+    });
+    </script>
+</body>
+</html>
